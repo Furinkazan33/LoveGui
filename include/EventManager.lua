@@ -1,6 +1,3 @@
-local Manager = require("Manager")
-local Event = require("Event")
-
 local EventManager = {}
 EventManager.__index = EventManager
 

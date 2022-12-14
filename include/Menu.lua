@@ -1,5 +1,3 @@
-local LoveBox2D = require("LoveBox2D")
-
 local Menu = {}
 Menu.__index = Menu
 

@@ -1,9 +1,3 @@
-local Window = require("include/Window")
-local TopBar = require("include/TopBar")
-local Button = require("include/Button")
-local Menu = require("include/Menu")
-local Item = require("include/Item")
-
 local WindowFactory = {}
 
 

@@ -1,4 +1,3 @@
-local LoveBox2D = require("LoveBox2D")
 
 local TopBar = {}
 TopBar.__index = TopBar

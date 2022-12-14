@@ -1,5 +1,3 @@
-local Manager = require("Manager")
-
 local WindowManager = {}
 WindowManager.__index = WindowManager
 

@@ -13,17 +13,17 @@ function Gui:new(name)
         modules = {
             factory = {
                 window = require("include/WindowFactory"),
-                event = require("EventFactory"),
-                context = require("ContextFactory"),
+                event = require("include/EventFactory"),
+                context = require("include/ContextFactory"),
             },
             loader = {},
             manager = {},
         },
     }
 
-    self.modules.loader.color = require("ColorLoader"):new("config/config_colors")
-    self.modules.loader.context = require("ContextLoader"):new("config/config_context")
-    self.modules.loader.event = require("EventLoader"):new("config/config_events")
+    self.modules.loader.color = require("include/ColorLoader"):new("config/config_colors")
+    self.modules.loader.context = require("include/ContextLoader"):new("config/config_context")
+    self.modules.loader.event = require("include/EventLoader"):new("config/config_events")
     self.modules.loader.window = require("include/WindowLoader"):new("config/config_windows")
     
     self.modules.manager.window = require("include/WindowManager"):new("init/init_windows")
@@ -45,13 +45,9 @@ function Gui:new(name)
         self.modules.manager.window:init()
         self.modules.manager.event:init()
 
-        return self.modules
+        return self
     end
-
-    self.debug = function(bool)
-        self.modules.global.debug.set(bool)
-    end
-    
+        
     self.update = function()
         for _, manager in pairs(self.modules.manager) do
             manager.update()

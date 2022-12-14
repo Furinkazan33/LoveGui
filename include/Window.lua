@@ -1,5 +1,3 @@
-local table = require("table+")
-local LoveBox2D = require("LoveBox2D")
 
 local Window = {}
 Window.__index = Window
