@@ -53,7 +53,7 @@ function WindowManager:new(init_file)
     end
 
     self.dispatch_events = function()
-        local events = modules.manager.event.pop_by_receiver(self)
+        local events = gui.manager.event.pop_by_receiver(self)
 
         for k, event in pairs(events) do
             event.args.target.add_event(event)
@@ -61,12 +61,12 @@ function WindowManager:new(init_file)
     end
 
     -- At framework update
-    self.update = function()
+    self.update = function(dt)
         self.dispatch_events()
 
         for k, window in pairs(self.children) do
             
-            window.update()
+            window.update(dt)
             
             if window.closed then
                 self.remove(k)
@@ -85,7 +85,7 @@ function WindowManager:new(init_file)
     -- Transforming config table into instance objects
     self.transform = function(elt)
         --TODO : get instance number by the manager and pass it as new uid
-        local window = modules.loader.window.get_unique(elt.static_uid).clone(elt.uid)
+        local window = gui.loader.window.get_unique(elt.static_uid).clone(elt.uid)
 
         window.parent = self
 

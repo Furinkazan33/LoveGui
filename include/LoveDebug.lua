@@ -8,12 +8,10 @@ function LoveDebug:new(config, position)
 		id = "LoveDebug",
 
 		enable = false,
-		position = position or { x = 0, y = 0 },
+		position = { x = 0, y = 0 },
+		position_start = position or { x = 0, y = 0 },
 		allowed = config.allowed,
-		allowed_variables = {},
 		text = config.text,
-
-		position_set = false
 	}
 
 	self.set = function(bool)
@@ -22,65 +20,48 @@ function LoveDebug:new(config, position)
 		return self
 	end
 
-	self.setPosition = function(x, y)
-		self.position.x = x
-		self.position.y = y
-
-		self.position_set = true
-		
-		return self
+	self.set_zoom = function(coef)
+		self.text.width = self.text.width * coef
+		self.text.newline_inc = self.text.newline_inc * coef
+		self.position_start.x = self.position_start.x * coef
+		self.position_start.y = self.position_start.y * coef
 	end
 
 	self.add = function(name, variable)
-		self.allowed_variables[name] = variable
+		self.allowed[name] = variable
 	end
 	
-	self.print_allowed_variables = function(x, y)
+	self.print_allowed = function()
 		if not self.enable then return end
-		
-		self.setPosition(x, y)
-		for k, v in pairs(self.allowed_variables) do
-			if type(v) == "table" then
-				-- Prints variable name
-				self.simple_print(tostring(k), self.position.x, self.position.y)
-				self.newline()
-				
-				for k2, v2 in pairs(v) do
-					self.simple_print(tostring(k2) .. " " .. tostring(v2), self.position.x, self.position.y)
-					self.newline()
-				end
-			else
-				self.simple_print(tostring(k) .. " " .. tostring(v), self.position.x, self.position.y)
-				self.newline()
-			end
-		end
-	end
 
-	self.newline = function()
-		self.position.y = self.position.y + self.text.newline_inc
-	end
+		self.position.x = self.position_start.x
+		self.position.y = self.position_start.y
 
-	self.simple_print = function(obj, x, y)
 		love.graphics.setLineWidth(self.text.width)
 		love.graphics.setColor(self.text.color.r, self.text.color.g, self.text.color.b, self.text.color.a)
 
-		love.graphics.print(tostring(obj), x, y)
-	end
-
-	-- Printing every global tables
-	self.print_G = function(x, y)
-		if not self.enable then return end
-		
-		self.setPosition(x, y)
-
-		for k, v in pairs(_G) do
-			if type(v) ~= "function" then
-				self.simple_print(tostring(k) .. "=" .. tostring(v), self.position.x, self.position.y)
-				self.newline()
+		for k, v in pairs(self.allowed) do
+			if type(v) == "table" then
+				-- table name
+				self.simple_print(k, "")
+				
+				for k2, v2 in pairs(v) do
+					self.simple_print(k2, v2)
+				end
+			else
+				self.simple_print(k, v)
 			end
 		end
-		
-		return self
+	end
+
+	self.simple_print = function(k, v)
+		if type(v) ~= "function" then
+			
+			love.graphics.print(tostring(k) .. " = " .. tostring(v), self.position.x, self.position.y)
+
+			-- newline
+			self.position.y = self.position.y + self.text.newline_inc
+		end
 	end
 	
 	return setmetatable(self, {

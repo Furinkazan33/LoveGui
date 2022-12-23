@@ -4,72 +4,78 @@
 -- - config manager to manage default configs and user configs
 -- - utiliser les canvas
 -- - sticky windows
+table = require("include/table+")
+LoveBox2D = require("include/LoveBox2D")
+Rgb = require("include/Rgb")
+Context = require("include/Context")
+Event = require("include/Event")
+Window = require("include/Window")
+TopBar = require("include/TopBar")
+Button = require("include/Button")
+Menu = require("include/Menu")
+Item = require("include/Item")
+Manager = require("include/Manager")
 
 local Gui = {}
 Gui.__index = Gui
 
+
+-- factory : Components factories
+-- loader : Default static components loaded at startup
+-- manager : Dynamic components created at runtime (clones of defaults loaded components)
 function Gui:new(name)
     self = {
-        modules = {
-            factory = {
-                window = require("include/WindowFactory"),
-                event = require("include/EventFactory"),
-                context = require("include/ContextFactory"),
-            },
-            loader = {},
-            manager = {},
+        factory = {
+            window = require("include/WindowFactory"),
+            event = require("include/EventFactory"),
+            context = require("include/ContextFactory"),
         },
+        loader = {},
+        manager = {},
     }
 
-    self.modules.loader.color = require("include/ColorLoader"):new("config/config_colors")
-    self.modules.loader.context = require("include/ContextLoader"):new("config/config_context")
-    self.modules.loader.event = require("include/EventLoader"):new("config/config_events")
-    self.modules.loader.window = require("include/WindowLoader"):new("config/config_windows")
+    self.loader.color = require("include/ColorLoader"):new("config/config_colors")
+    self.loader.context = require("include/ContextLoader"):new("config/config_context")
+    self.loader.event = require("include/EventLoader"):new("config/config_events")
+    self.loader.window = require("include/WindowLoader"):new("config/config_windows")
     
-    self.modules.manager.window = require("include/WindowManager"):new("init/init_windows")
-    self.modules.manager.event = require("include/EventManager"):new()
-
-
-
-    -- Initializing modules based on the config file
-    -- modules.factory : Components factories
-    -- modules.loader : Default static components loaded at startup
-    -- modules.manager : Dynamic components created at runtime (clones of defaults loaded components)
+    self.manager.window = require("include/WindowManager"):new("init/init_windows")
+    self.manager.event = require("include/EventManager"):new()
 
     self.init = function()
-        self.modules.loader.color:init()
-        self.modules.loader.context.init()
-        self.modules.loader.event:init() 
-        self.modules.loader.window:init()
+        self.loader.color:init()
+        self.loader.context.init()
+        self.loader.event:init() 
+        self.loader.window:init()
     
-        self.modules.manager.window:init()
-        self.modules.manager.event:init()
+        self.manager.window:init()
+        self.manager.event:init()
 
         return self
     end
         
-    self.update = function()
-        for _, manager in pairs(self.modules.manager) do
-            manager.update()
+    self.update = function(dt)
+        for _, manager in pairs(self.manager) do
+            manager.update(dt)
         end
     end
 
     self.set_zoom = function(coef)
-        self.modules.manager.window.set_zoom(coef)
+        self.manager.window.set_zoom(coef)
     end
 
     self.mousemoved = function(x, y, dx, dy, istouch)
-        self.modules.manager.window.mousemoved(x, y, dx, dy)
+        self.manager.window.mousemoved(x, y, dx, dy)
     end
 
     self.mousepressed = function(x, y, button, istouch, presses)
         if button == 1 then
-            self.modules.manager.window.mousepressed(x, y)
+            self.manager.window.mousepressed(x, y)
         end
     end
 
     self.draw = function()
-        self.modules.manager.window.draw()
+        self.manager.window.draw()
     end
 
     return self

@@ -4,7 +4,7 @@ Zoom.__index = Zoom
 function Zoom:new(config_file)
 	self = {
 		config_file = config_file,
-		c_resolution = require(config_file),
+		c_config = require(config_file),
 		ZOOM = { init = 1.0, value = 1.0, coef = 1.0, current_res = 1 },
 		reg = {
 			tables = {},
@@ -44,27 +44,39 @@ function Zoom:new(config_file)
 
 	-- Extend this method in graphic engine if needed
 	self.set_zoom = function(i)
-		-- Loading resolution configuration
 		if not i then i = 1 end
-		self.c_res = self.c_resolution.resolutions[i]
+
+		self.current = self.c_config.list[i]
 
 		-- Change zoom for every displayable object
-		self.apply(self.ZOOM.init * self.c_res.res_coef)
-		
-		self.ZOOM.current_res = i + 1
-		if self.ZOOM.current_res > #self.c_resolution.resolutions then 
-			self.ZOOM.current_res = 1 
-		end
+		self.apply(self.ZOOM.init * self.current.coef)
 		
 		return self
 	end
 
-	self.next_zoom = function()
+	self.next = function()
+		self.ZOOM.current_res = self.ZOOM.current_res + 1
+
+		if self.ZOOM.current_res > #self.c_config.list then 
+			self.ZOOM.current_res = 1 
+		end
+
 		self.set_zoom(self.ZOOM.current_res)
-		
+
 		return self
 	end
 	
+	self.previous = function()
+		self.ZOOM.current_res = self.ZOOM.current_res - 1
+
+		if self.ZOOM.current_res == 0 then 
+			self.ZOOM.current_res = #self.c_config.list 
+		end
+
+		self.set_zoom(self.ZOOM.current_res)
+
+		return self
+	end
 	
 	return self
 end

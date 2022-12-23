@@ -7,16 +7,16 @@ function Context:new(elt)
 	self.type = "System"
 	self.id = "Context"
 		
-	self.serialize = function()
-		return modules.factory.context.serialize(self)
+	self.serialize = function(factory)
+		return gui.factory.context.serialize(self)
 	end
 	
 	self.deserialize = function(elt)
-		return modules.factory.context.deserialize(elt)
+		return gui.factory.context.deserialize(elt)
 	end
 	
 	self.clone = function()
-		return modules.factory.context.clone(self)
+		return gui.factory.context.clone(self)
 	end
 	
 	self.tostring = function()

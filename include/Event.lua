@@ -10,15 +10,15 @@ function Event:new(elt)
     self.id = "Event"
 
 	self.serialize = function()
-		return modules.factory.event.serialize(self)
+		return gui.factory.event.serialize(self)
 	end
 	
 	self.deserialize = function(elt)
-		return modules.factory.event.deserialize(elt)
+		return gui.factory.event.deserialize(elt)
 	end
 	
 	self.clone = function()
-		return modules.factory.event.clone(self)
+		return gui.factory.event.clone(self)
     end
 	
 	self.tostring = function()

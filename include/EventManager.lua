@@ -38,14 +38,14 @@ function EventManager:new(init_file, n)
             return "User"
 
         elseif string.sub(new_event.uid, 1, 2) == "w_" then
-            return modules.manager.window
+            return gui.manager.window
 
         else
             assert(false, "event uid not listed in EventManager.add_receiver : " .. new_event.uid)
         end
     end
 
-    self.update = function()
+    self.update = function(dt)
         --for k, event in pairs(self.children) do
         --    self.dispatch_event(event)
         --end

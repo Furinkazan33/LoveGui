@@ -8,6 +8,7 @@ function LoveBox2D:new(elt)
 	self = Box2D:new(elt)
 	self.hovered = false
 	self.dragged = false
+	self.__draw = self.draw
 
 	self.is_hovered = function(x, y)
 		if self.is_inside(x, y) then
@@ -99,7 +100,6 @@ function LoveBox2D:new(elt)
 		return self.clicked
 	end
 	
-	
 	self.draw_fill = function(delta)
 		if not delta then
 			delta = { x = 0, y = 0 }
@@ -139,15 +139,33 @@ function LoveBox2D:new(elt)
 		end
 	end
 
-	self.draw = function(delta)		
-		if self.context and self.visible then
+	-- TODO: text disposition
+	self.print_text = function(delta)
+		if not delta then
+			delta = { x = 0, y = 0 }
+		end
+
+        love.graphics.setColor(self.context.text.r, self.context.text.g, self.context.text.b, self.context.text.a)
+        
+        love.graphics.setNewFont(self.font)
+
+        love.graphics.print(self.text, self.position.x - delta.x, self.position.y - delta.y)
+    end
+
+	self.draw = function(delta)
+		if self.visible then
 			self.draw_fill(delta)
 
 			self.draw_line(delta)
+
+			if self.text then
+				assert(self.font, "LoveBox2D.draw - Missing font")
+
+				self.print_text(delta)
+			end
 		end
-		for k, v in pairs(self.children) do
-			self.draw_children(v, delta)
-		end
+
+		self.draw_children(delta)
 	end
 
 	return self

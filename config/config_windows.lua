@@ -18,7 +18,8 @@ local config = {
                 {
                     id = "Menu",
                     uid = "menu1",
-                    name = "Fichier",
+                    text = "Fichier",
+                    font = 18,
                     position = { x = 0, y = 0},
                     size = { w = 100, h = 25 }, 
                     moveable = false, 
@@ -33,7 +34,8 @@ local config = {
                 {
                     id = "Menu",
                     uid = "menu2",
-                    name = "Outils",
+                    text = "Outils",
+                    font = 18,
                     position = { x = 100, y = 0},
                     size = { w = 100, h = 25 }, 
                     moveable = false, 
@@ -69,13 +71,14 @@ local config = {
                 {
                     id = "TopBar",
                     uid = "topbar",
-                    name = "window_normal",
+                    text = "window_normal",
                     position = {
                         x = 200, y = 0
                     },
                     size = {
                         w = 225, h = 25
                     },
+                    font = 18,
                     moveable = false
                 }
             },
@@ -116,13 +119,14 @@ local config = {
                 {
                     id = "TopBar",
                     uid = "topbar",
-                    name = "window_no_menu",
+                    text = "window_no_menu",
                     position = {
                         x = 0, y = 0
                     },
                     size = {
                         w = 725, h = 25
                     },
+                    font = 18,
                     moveable = false
                 },
             },
@@ -147,13 +151,14 @@ local config = {
                 {
                     id = "TopBar",
                     uid = "topbar",
-                    name = "window_alert",
+                    text = "window_alert",
                     position = {
                         x = 0, y = 0
                     },
                     size = {
                         w = 175, h = 25
                     },
+                    font = 18,
                     moveable = false
                 },
             },

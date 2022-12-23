@@ -63,11 +63,11 @@ function Position:new(elt)
 
 	return setmetatable(self, {
 		__add = function(p1, p2)
-			return Position:new(p1.x + p2.x, p1.y + p2.y)
+			return Position:new({ x = p1.x + p2.x, y = p1.y + p2.y })
 		end,
 
 		__sub = function(p1, p2)
-			return Position:new(p1.x - p2.x, p1.y - p2.y)
+			return Position:new({ x = p1.x - p2.x, y = p1.y - p2.y })
 		end,
 
 		__eq = function(p1, p2)

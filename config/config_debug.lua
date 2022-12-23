@@ -1,22 +1,23 @@
 
---TODO
-
 local debug = {
     type = "config",
     id = "config_debug",
 
+    -- Allowed variables
     allowed = {
-        {
-            type = "System", ids = { "LoveBox2D", "Position", "Size", "Rgb", "Debug", "Context", "Boundary" }
-        },
+        name_to_print = variable_name,
+        _G = _G,
     },
 
     text = { 
         color = { r=0, g=0, b=0, a=1 },
         font = 18, 
-        width = 1,
+        width = 2,
         newline_inc = 20
     }
 }
+
+
+
 
 return debug

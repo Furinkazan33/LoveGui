@@ -8,8 +8,8 @@ function Button:new(elt)
     self.send_event = function()
         assert(self.event, "Button has no event uid")
 
-        local event = modules.factory.event.create(self.event, { sender = self, target = self.parent }) 
-        modules.manager.event.add(event)
+        local event = gui.factory.event.create(self.event, { sender = self, target = self.parent }) 
+        gui.manager.event.add(event)
 
         return self
     end

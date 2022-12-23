@@ -16,7 +16,7 @@ end
 function ContextFactory.deserialize_color_to_rgb(c_color)
 	if not c_color then return nil end
 	
-	local rgb = modules.loader.color.get_unique(c_color.uid).clone()
+	local rgb = gui.loader.color.get_unique(c_color.uid).clone()
 	return rgb.concentration(c_color.concentration).alpha(c_color.alpha)
 end
 

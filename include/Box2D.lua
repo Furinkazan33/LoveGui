@@ -21,12 +21,15 @@ Box2D.__index = Box2D
 		position = {},
 		size = {},
 		context = {},   -- for drawing purpose
-		boundary = {}, -- limits of the position
+		boundary = {},  -- limits the position
 		visible = bool,
 		focus = bool,
 		moveable = bool,
-		children = {}
+
+		children = {},  -- Box2D children
 	} 
+
+	-- See serialize() method below for complete list
 ]]
 function Box2D:new(elt)
 	assert(elt.parent, "Box2D:new - missing parent")
@@ -51,6 +54,8 @@ function Box2D:new(elt)
 	self.focus = self.focus or true
 	self.moveable = self.moveable or true
 	self.children = {}
+
+
 
 	self.is_root = function()
 		if self.parent then 
@@ -118,7 +123,7 @@ function Box2D:new(elt)
 
 	self.remove = function(uid)
 		table.remove(self.children, uid)
-		--self.children[uid] = nil
+
 		return self
 	end
 
@@ -162,6 +167,10 @@ function Box2D:new(elt)
 			self.boundary.set_zoom(coef) 
 		end
 
+		if self.font then 
+			self.font = self.font * coef
+		end
+
 		for k, v in pairs(self.children) do
 			v.set_zoom(coef)
 		end
@@ -192,7 +201,7 @@ function Box2D:new(elt)
 			id = self.id,
 			type = self.type,
 			uid = self.uid,
-			name = self.name,
+			text = self.text,
 			title = self.title,
 			event = self.event,
 			parent = self.parent.uid,
@@ -203,6 +212,7 @@ function Box2D:new(elt)
 			visible = self.visible,
 			focus = self.focus,
 			moveable = self.moveable,
+			font = self.font,
 			
 			children = {}
 		}
@@ -245,32 +255,31 @@ function Box2D:new(elt)
 		return result
 	end
 
-	self.draw_children = function(child, delta)
-		local d = delta
-
-		if not d then
-			d = { x = 0, y = 0 }
+	self.draw_children = function(delta)
+		if not delta then 
+			delta = Position:new({ x = 0, y = 0 }) 
 		end
 
-		d.x = d.x - self.position.x
-		d.y = d.y - self.position.y
+		-- Position spreading
+		delta = delta - self.position
 
-		child.draw(d)
+		for _, child in pairs(self.children) do
+			child.draw(delta)
+		end
+
+		return self
 	end
 
-	self.draw = function(delta)		
-		if self.context and self.visible then
-			
-			-- TODO: to implement
-			
+	--[[ USER: to override in inherited tables ]]
+	self.draw = function(delta)
+		if self.visible then
+			--[[ USER: to complete ]]
 		end
-		for k, v in pairs(self.children) do
-			self.draw_children(v, delta)
-		end
+		
+		self.draw_children(delta)
 	end
 
 	return setmetatable(self, {
-		
 		__eq = function(b1, b2)
 			return b1.uid == b2.uid
 		end,
@@ -278,7 +287,6 @@ function Box2D:new(elt)
 		__tostring = function()
 			return 	self.type .. "." .. self.id .. "[" .. self.to_simple_string() .. "]"
 		end,
-
 	})
 
 end

@@ -2,7 +2,7 @@ local EventFactory = {}
 EventFactory.__index = EventFactory
 
 function EventFactory.create(uid, args)
-    local event = modules.loader.event.get_unique(uid).clone()
+    local event = gui.loader.event.get_unique(uid).clone()
 
     local ret, k = EventFactory.exist_args(event.args, args)
     assert(ret, "EventManager.create_event - missing argument : " .. k)

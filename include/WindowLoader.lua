@@ -51,7 +51,7 @@ function WindowLoader:new(config_file)
     -- Transforming config table into instance objects
     self.transform = function(elt)
         elt.parent = self.uid
-        return modules.factory.window.window.deserialize(elt)
+        return gui.factory.window.window.deserialize(elt)
     end
 
     --self.init()

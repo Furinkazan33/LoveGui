@@ -5,7 +5,7 @@ MenuBar.__index = MenuBar
 function MenuBar:new(elt)
     self = LoveBox2D:new(elt)
     self.id = "MenuBar"
-    self.disposition = modules.loader.window.disposition.left
+    self.disposition = gui.loader.window.disposition.left
         
     
     self.add_menu = function(menu)

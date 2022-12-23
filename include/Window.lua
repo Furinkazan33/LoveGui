@@ -5,7 +5,7 @@ Window.__index = Window
 
 function Window:new(elt)
     self = LoveBox2D:new(elt)
-    self._draw = self.draw
+    
     self.id = "Window"
     self.events = {}
     self.minimize = false
@@ -92,11 +92,13 @@ function Window:new(elt)
         return self
     end
 
-    self.update = function()
+    self.update = function(dt)
         self.setClickedAndRelease()
 
         for _, child in pairs(self.children) do
-            if child.update then child.update() end
+            if child.update then 
+                child.update(dt)
+            end
         end
 
         if not self.closed then
@@ -116,32 +118,8 @@ function Window:new(elt)
         return self
     end
 
-    self.print_title = function(delta)
-        local topbar = self.get_topbar()
-
-        if not topbar then return false end
-
-        love.graphics.setColor(self.context.text.r, self.context.text.g, self.context.text.b, self.context.text.a)
-        
-        if delta then
-            love.graphics.print(topbar.name, self.position.x + topbar.position.x - delta.x + topbar.size.w/3, self.position.y + topbar.position.y - delta.y)
-        else
-            love.graphics.print(topbar.name, self.position.x + topbar.position.x + topbar.size.w/3, self.position.y + topbar.position.y)
-        end
-    end
-
-    self.draw = function(delta)
-        -- Normal drawing
-        self._draw(delta)
-
-        -- Printing window title
-        self.print_title(delta)
-
-        return self
-    end
-
     self.deserialize = function(elt)
-        return modules.factory.window.window.deserialize(elt)
+        return gui.factory.window.window.deserialize(elt)
     end
 
     self.clone = function(new_uid)

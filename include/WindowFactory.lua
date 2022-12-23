@@ -22,10 +22,10 @@ WindowFactory._get_by_uid = function(uid, managers)
 end
 
 WindowFactory.get_by_uid = function(uid)
-    local result = WindowFactory._get_by_uid(uid, modules.loader)
+    local result = WindowFactory._get_by_uid(uid, gui.loader)
 
     if not result then
-        result = WindowFactory._get_by_uid(uid, modules.manager)
+        result = WindowFactory._get_by_uid(uid, gui.manager)
     end
 
     assert(result, "WindowFactory.get_by_uid - No result for this uid : " .. uid)
@@ -42,7 +42,7 @@ WindowFactory.window = {
         local c = table.clone(elt)
         
         c.parent = WindowFactory.get_by_uid(elt.parent)
-        c.context = modules.loader.context.get_unique("window")
+        c.context = gui.loader.context.get_unique("window")
 
         local window = Window:new(c)
         
@@ -72,7 +72,7 @@ WindowFactory.menu = {
         local c = table.clone(elt)
 
         c.parent = parent
-        c.context = modules.loader.context.get_unique("menu")
+        c.context = gui.loader.context.get_unique("menu")
 
         local menu = Menu:new(c)
 
@@ -91,7 +91,7 @@ WindowFactory.item = {
         local c = table.clone(elt)
 
         c.parent = parent
-        c.context = modules.loader.context.get_unique("menu")
+        c.context = gui.loader.context.get_unique("menu")
 
         return Item:new(c)
     end,
@@ -103,7 +103,7 @@ WindowFactory.topbar = {
 
         local c = table.clone(elt)
 
-        c.context = modules.loader.context.get_unique("topbar")
+        c.context = gui.loader.context.get_unique("topbar")
         c.parent = parent
 
         return TopBar:new(c)
@@ -117,7 +117,7 @@ WindowFactory.button = {
         local c = table.clone(elt)
 
         c.parent = parent
-        c.context = modules.loader.context.get_unique("button")
+        c.context = gui.loader.context.get_unique("button")
 
         return Button:new(c)
     end,
